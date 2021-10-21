@@ -1,4 +1,7 @@
 class MoviesController < ApplicationController
+  #create new instance var
+  #put in html list
+  #if filtered is passed in a value, send to html to highlight
   
   def show
     id = params[:id] # retrieve movie ID from URI route
@@ -12,11 +15,12 @@ class MoviesController < ApplicationController
     else
       @ratings = params[:ratings]
     end
-    
-    @movies = Movie.with_ratings(@ratings)
+   
+    @sort_by = params[:sort_by]
+    @movies = Movie.with_ratings(@ratings, @sort_by)
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = []
-    
+    @ratings_to_show = params[:ratings]? params[:ratings].keys : []
+   
   end
 
   def new

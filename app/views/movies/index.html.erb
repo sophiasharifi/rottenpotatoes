@@ -1,4 +1,5 @@
 <!--  This file is app/views/movies/index.html.erb -->
+
 <h2>All Movies</h2>
 
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
@@ -15,10 +16,14 @@
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
-    <tr>
-      <th>Movie Title</th>
+      <tr>
+       <th>
+         <%= link_to "Movie Title", movies_path({sort_by: 'title', ratings: params[:ratings]}), id: "title_header", class: "hilite p-3 mb-2 bg-warning text-dark" %>
+       </th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th>
+         <%= link_to "Release Date", movies_path({sort_by: 'release_date', ratings: params[:ratings]}), id:"release_date_header", class: "hilite p-3 mb-2 bg-warning text-dark" %>
+      </th>
       <th>More Info</th>
     </tr>
   </thead>
