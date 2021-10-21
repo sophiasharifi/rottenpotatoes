@@ -15,7 +15,6 @@ class MoviesController < ApplicationController
     else
       @ratings = params[:ratings]
     end
-   
     @sort_by = params[:sort_by]
     @movies = Movie.with_ratings(@ratings, @sort_by)
     @all_ratings = Movie.all_ratings
