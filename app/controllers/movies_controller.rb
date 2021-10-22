@@ -9,18 +9,37 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
+  
   def index
-    if params[:ratings]
-        @ratings = params[:ratings].keys
-    else
-      @ratings = params[:ratings]
+    if(params[:ratings].nil? && params[:sort_by].nil?)
+      #create a hash for rating bc its a list, map whatever is in rating, session
+      #[rating] to populate the hash, then pass moviespath .h()
+        if session[:ratings]
+          session[:ratings] = Hash[session[:ratings].collect {|item| [item, ""]}]
+        end
+        rating = session[:ratings] || Hash[Movie.all_ratings.collect {|item| [item, ""]}]
+        sort = session[:sort_by] || ""
+        redirect_to movies_path({ratings: rating, sort_by: sort})
     end
-    @sort_by = params[:sort_by]
+    
+     @ratings = params[:ratings].nil? ? Movie.all_ratings: params[:ratings].keys
+     @sort_by = params[:sort_by]
+    
+    
+    session[:ratings] = @ratings
+    
+    if @sort_by != nil
+      session[:sort_by] = @sort_by
+    else
+      session[:sort_by] = ''
+    end
+     
     @movies = Movie.with_ratings(@ratings, @sort_by)
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = params[:ratings]? params[:ratings].keys : []
-   
-  end
+    @ratings_to_show = params[:ratings]? @ratings : [] #maybe fix idk
+    
+    
+end
 
   def new
     # default: render 'new' template
